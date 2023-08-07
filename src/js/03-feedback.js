@@ -6,8 +6,8 @@ form.addEventListener(
   throttle(handlerObject, 500, { leading: true, trailing: true })
 );
 
-let emailValue;
-let messageVlaue;
+let emailValue ='';
+let messageVlaue = '';
 function handlerObject(evt) {
   if (evt.target.name === 'email') {
     emailValue = evt.target.value;
@@ -26,7 +26,6 @@ const localText = localStorage.getItem('feedback-form-state');
 if (localText) {
   autoText(JSON.parse(localText));
 }
-
 function autoText(objText) {
   const { email, message } = form.elements;
   email.value = objText.userEmail;
