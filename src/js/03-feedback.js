@@ -1,24 +1,26 @@
-const form = document.querySelector('.feedback-form');
 var throttle = require('lodash.throttle');
+const form = document.querySelector('.feedback-form');
+const { email, message } = form.elements;
+email.value = '';
+message.value = '';
 
 form.addEventListener(
   'input',
   throttle(handlerObject, 500, { leading: true, trailing: true })
 );
 
-let emailValue ='';
-let messageVlaue = '';
 function handlerObject(evt) {
+  const objForm = {
+    userEmail: email.value,
+    userMessage: message.value,
+  };
   if (evt.target.name === 'email') {
-    emailValue = evt.target.value;
+    userEmail = evt.target.value;
   }
   if (evt.target.name === 'message') {
-    messageVlaue = evt.target.value;
+    userMessage = evt.target.value;
   }
-  const objForm = {
-    userEmail: emailValue,
-    userMessag: messageVlaue,
-  };
+
   localStorage.setItem('feedback-form-state', JSON.stringify(objForm));
 }
 
@@ -26,25 +28,26 @@ const localText = localStorage.getItem('feedback-form-state');
 if (localText) {
   autoText(JSON.parse(localText));
 }
+
 function autoText(objText) {
+  console.log(objText);
+  const {userEmail,userMessage} = objText
+  console.log(userMessage);
   const { email, message } = form.elements;
-  email.value = objText.userEmail;
-  message.value = objText.userMessag;
+  email.value = userEmail;
+  message.value = userMessage;
 }
 
 form.addEventListener('submit', handlerSubmit);
 
 function handlerSubmit(event) {
   event.preventDefault();
-  const { email, message } = form.elements;
 
-  const lastMessage = {
-    userEmail: email.value,
-    userMessage: message.value,
-  };
-  console.log(lastMessage);
+  const lastLog = localStorage.getItem('feedback-form-state');
+  console.log(JSON.parse(lastLog));
 
   localStorage.removeItem('feedback-form-state');
+  const { email, message } = form.elements;
   email.value = '';
   message.value = '';
 }
