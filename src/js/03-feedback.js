@@ -15,10 +15,10 @@ function handlerObject(evt) {
     userMessage: message.value,
   };
   if (evt.target.name === 'email') {
-    userEmail = evt.target.value;
+    objForm.userEmail = evt.target.value;
   }
   if (evt.target.name === 'message') {
-    userMessage = evt.target.value;
+    objForm.userMessage = evt.target.value;
   }
 
   localStorage.setItem('feedback-form-state', JSON.stringify(objForm));
@@ -30,9 +30,7 @@ if (localText) {
 }
 
 function autoText(objText) {
-  console.log(objText);
   const {userEmail,userMessage} = objText
-  console.log(userMessage);
   const { email, message } = form.elements;
   email.value = userEmail;
   message.value = userMessage;
