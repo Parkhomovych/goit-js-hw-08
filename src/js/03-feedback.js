@@ -1,8 +1,6 @@
-var throttle = require('lodash.throttle');
+const throttle = require('lodash.throttle');
 const form = document.querySelector('.feedback-form');
 const { email, message } = form.elements;
-email.value = '';
-message.value = '';
 
 form.addEventListener(
   'input',
@@ -24,14 +22,13 @@ function handlerObject(evt) {
   localStorage.setItem('feedback-form-state', JSON.stringify(objForm));
 }
 
-const localText = localStorage.getItem('feedback-form-state');
+const localText = JSON.parse(localStorage.getItem('feedback-form-state'));
 if (localText) {
-  autoText(JSON.parse(localText));
+  autoText(localText);
 }
 
 function autoText(objText) {
-  const {userEmail,userMessage} = objText
-  const { email, message } = form.elements;
+  const { userEmail, userMessage } = objText;
   email.value = userEmail;
   message.value = userMessage;
 }
@@ -41,11 +38,55 @@ form.addEventListener('submit', handlerSubmit);
 function handlerSubmit(event) {
   event.preventDefault();
 
-  const lastLog = localStorage.getItem('feedback-form-state');
-  console.log(JSON.parse(lastLog));
+  const lastLog = JSON.parse(localStorage.getItem('feedback-form-state'));
+  console.log(lastLog);
 
   localStorage.removeItem('feedback-form-state');
-  const { email, message } = form.elements;
   email.value = '';
   message.value = '';
 }
+
+// <=====================================================================>
+
+// const throttle = require('lodash.throttle');
+// const form = document.querySelector('.feedback-form');
+// const { email: userEmail, message: userMessage } = form.elements;
+// const objForm = {};
+
+// form.addEventListener(
+//   'input',
+//   throttle(handlerObject, 500, { leading: true, trailing: true })
+// );
+
+// function handlerObject(evt) {
+//   objForm[evt.target.name] = evt.target.value;
+
+//   localStorage.setItem('feedback-form-state', JSON.stringify(objForm));
+// }
+
+// const localText = JSON.parse(localStorage.getItem('feedback-form-state'));
+// if (localText) {
+//   autoText(localText);
+// }
+
+// function autoText(objText) {
+//   const { email, message } = objText;
+//   if (email) {
+//     userEmail.value = email;
+//   }
+//   if (message) {
+//     userMessage.value = message;
+//   }
+// }
+
+// form.addEventListener('submit', handlerSubmit);
+
+// function handlerSubmit(event) {
+//   event.preventDefault();
+
+//   const lastLog = JSON.parse(localStorage.getItem('feedback-form-state'));
+//   console.log(lastLog);
+
+//   localStorage.removeItem('feedback-form-state');
+//   form.reset();
+// }
